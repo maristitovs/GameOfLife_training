@@ -1,0 +1,9 @@
+1. Create a grid describing the status of each cell
+2. Iterations
+3. Describe game rules
+
+Programming tasks:
+1. initial state creation
+2. pass a provider as an argument
+3. Create tests
+4. Write actual code

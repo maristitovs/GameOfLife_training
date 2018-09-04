@@ -1,0 +1,13 @@
+{
+  "name": "game_of_life",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "author": "Maris Titovs",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "23.5.0"
+  }
+}
