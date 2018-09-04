@@ -18,30 +18,36 @@ class GameOfLife {
 
   _iterate() {
     const newGrid = [];
-    this.grid.forEach((row, columnIndex) => {
-      row.forEach((element, rowIndex) => {
-        const neighbours = this._countNeighbours(columnIndex, rowIndex);
+    this.grid.forEach((row, rowIndex) => {
+      const newRow = [];
+      row.forEach((element, columnIndex) => {
+        const neighbours = this._countNeighbours(rowIndex, columnIndex);
         // neighbours && console.log(neighbours, columnIndex, rowIndex);
-        if (element === true && neighbours < 2) {
-          // RULE 1
-          newGrid.push(false);
-          this.provider.onIsolation(columnIndex, rowIndex);
-        } else if (element === true && (neighbours === 2 || neighbours === 3)) {
-          // RULE 2
-          newGrid.push(true);
-          this.provider.onLive(columnIndex, rowIndex);
-        } else if (element === true && neighbours > 3) {
-          // RULE 3
-          newGrid.push(false);
-          this.provider.onOverPopulation(columnIndex, rowIndex);
-        } else if (element === false && neighbours === 3) {
-          // RULE 4
-          newGrid.push(true);
-          this.provider.onReproduction(columnIndex, rowIndex);
+        if (element) {
+          if (neighbours < 2) {
+            // RULE 1
+            newRow.push(false);
+            this.provider.onIsolation(rowIndex, columnIndex);
+          } else if (neighbours === 2 || neighbours === 3) {
+            // RULE 2
+            newRow.push(true);
+            this.provider.onLive(rowIndex, columnIndex);
+          } else if (neighbours > 3) {
+            // RULE 3
+            newRow.push(false);
+            this.provider.onOverPopulation(rowIndex, columnIndex);
+          }
         } else {
-          newGrid.push(element);
+          if (neighbours === 3) {
+            // RULE 4
+            newRow.push(true);
+            this.provider.onReproduction(rowIndex, columnIndex);
+          } else {
+            newRow.push(element);
+          }
         }
       });
+      newGrid.push(newRow);
     });
     this.provider.onIteration(newGrid);
   }
@@ -49,19 +55,19 @@ class GameOfLife {
   _countNeighbours(column, row) {
     let count = 0;
 
-    POSITIONS.forEach(([x, y]) => {
-      const posX = row + x;
-      const posY = column + y;
-      if (this._outOfBounds(posX, posY)) return;
+    POSITIONS.forEach(([y, x]) => {
+      const posY = row + y;
+      const posX = column + x;
+      if (this._outOfBounds(posY, posX)) return;
 
-      this.grid[posY][posX] && console.warn(column, row);
+      // this.grid[posY][posX] && console.warn(column, row);
       count += Number(this.grid[posY][posX]);
     });
 
     return count;
   }
 
-  _outOfBounds(posX, posY) {
+  _outOfBounds(posY, posX) {
     return posX < 0 || posY < 0 || posX >= this.size || posY >= this.size;
   }
 }
