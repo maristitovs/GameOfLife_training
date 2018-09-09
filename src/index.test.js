@@ -1,3 +1,4 @@
+const fixtures = require("./fixtures");
 const { GameOfLife } = require("./index");
 
 class TestProvider {
@@ -11,101 +12,67 @@ class TestProvider {
 }
 
 describe("GameOfLife", () => {
-  const grid = [
-    [false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false],
-    [false, false, false, true, false, false, false],
-    [false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false]
-  ];
-
   it("should initialize", () => {
-    const provider = new TestProvider({});
-    const life = new GameOfLife(grid, provider);
+    const provider = new TestProvider();
+    const life = new GameOfLife(fixtures.onIteration.given, provider);
 
     expect(life).toBeInstanceOf(GameOfLife);
-    expect(life.size).toBe(7);
-    expect(life.grid).toEqual(grid);
+    expect(life.size).toBe(5);
+    expect(life.grid).toEqual(fixtures.onIteration.given);
     expect(life.provider).toEqual(provider);
   });
 
   it("#onIteration", () => {
     const provider = new TestProvider();
-    const life = new GameOfLife(grid, provider);
+    const life = new GameOfLife(fixtures.onIteration.given, provider);
     life.start();
 
-    expect(provider.onIteration).toBeCalledWith([
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false]
-    ]);
+    expect(provider.onIteration).toBeCalledWith(fixtures.onIteration.expected);
   });
 
   it("#onIsolation", () => {
     const provider = new TestProvider();
-    const life = new GameOfLife(grid, provider);
+    const life = new GameOfLife(fixtures.onIsolation.given, provider);
     life.start();
 
-    expect(provider.onIsolation).toBeCalledWith(3, 3);
+    expect(provider.onIsolation).toHaveBeenCalledTimes(1);
+    expect(provider.onIsolation).toHaveBeenNthCalledWith(1, 2, 2);
+    expect(provider.onIteration).toBeCalledWith(fixtures.onIsolation.expected);
   });
+
   it("#onLive", () => {
-    const liveGrid = [
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, true, false, false, false, false],
-      [false, false, false, true, false, false, false],
-      [false, false, false, false, true, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false]
-    ];
     const provider = new TestProvider();
-    const life = new GameOfLife(liveGrid, provider);
+    const life = new GameOfLife(fixtures.onLive.given, provider);
     life.start();
 
-    expect(provider.onLive).toBeCalledWith(3, 3);
-    expect(provider.onIsolation).toBeCalledWith(2, 2);
-    expect(provider.onIsolation).toBeCalledWith(4, 4);
+    expect(provider.onLive).toHaveBeenCalledTimes(3);
+    expect(provider.onLive).toHaveBeenNthCalledWith(1, 1, 2);
+    expect(provider.onLive).toHaveBeenNthCalledWith(2, 2, 2);
+    expect(provider.onLive).toHaveBeenNthCalledWith(3, 2, 3);
+    expect(provider.onIteration).toBeCalledWith(fixtures.onLive.expected);
   });
 
   it("#onOverPopulation", () => {
-    const overGrid = [
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, true, true, false, false],
-      [false, false, false, true, true, false, false],
-      [false, false, false, true, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false]
-    ];
     const provider = new TestProvider();
-    const life = new GameOfLife(overGrid, provider);
+    const life = new GameOfLife(fixtures.onOverPopulation.given, provider);
     life.start();
 
-    expect(provider.onOverPopulation).toBeCalledWith(3, 3);
-    expect(provider.onOverPopulation).toBeCalledWith(4, 3);
+    expect(provider.onOverPopulation).toHaveBeenCalledTimes(1);
+    expect(provider.onOverPopulation).toHaveBeenNthCalledWith(1, 2, 2);
+    expect(provider.onIteration).toBeCalledWith(
+      fixtures.onOverPopulation.expected
+    );
   });
+
   it("#onReproduction", () => {
-    const reproductionGrid = [
-      [false, true, false, false, false, false, false],
-      [true, true, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false],
-      [false, false, false, false, false, true, true],
-      [false, false, false, false, false, true, false]
-    ];
     const provider = new TestProvider();
-    const life = new GameOfLife(reproductionGrid, provider);
+    const life = new GameOfLife(fixtures.onReproduction.given, provider);
     life.start();
 
-    // expect(provider.onReproduction).toBeCalledTwice();
-    expect(provider.onReproduction).toBeCalledWith(0, 0);
-    expect(provider.onReproduction).toBeCalledWith(6, 6);
+    expect(provider.onReproduction).toHaveBeenCalledTimes(1);
+    expect(provider.onReproduction).toHaveBeenNthCalledWith(1, 1, 1);
+    expect(provider.onIteration).toBeCalledWith(
+      fixtures.onReproduction.expected
+    );
   });
 });

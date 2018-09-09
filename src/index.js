@@ -17,54 +17,66 @@ class GameOfLife {
   }
 
   _iterate() {
-    const newGrid = [];
-    this.grid.forEach((row, rowIndex) => {
-      const newRow = [];
-      row.forEach((element, columnIndex) => {
-        const neighbours = this._countNeighbours(rowIndex, columnIndex);
-        // neighbours && console.log(neighbours, columnIndex, rowIndex);
-        if (element) {
-          if (neighbours < 2) {
-            // RULE 1
+    const gridReduce = (newGrid, row, rowIndex) => {
+      const reduceRow = (newRow, alive, columnIndex) => {
+        const liveNeighbours = this._countLiveNeighbours(rowIndex, columnIndex);
+        if (alive) {
+          if (this._isIsolation(liveNeighbours)) {
             newRow.push(false);
             this.provider.onIsolation(rowIndex, columnIndex);
-          } else if (neighbours === 2 || neighbours === 3) {
-            // RULE 2
+          } else if (this._isLive(liveNeighbours)) {
             newRow.push(true);
             this.provider.onLive(rowIndex, columnIndex);
-          } else if (neighbours > 3) {
-            // RULE 3
+          } else if (this._isOverPopulation(liveNeighbours)) {
             newRow.push(false);
             this.provider.onOverPopulation(rowIndex, columnIndex);
           }
         } else {
-          if (neighbours === 3) {
-            // RULE 4
+          if (this._isReproduction(liveNeighbours)) {
             newRow.push(true);
             this.provider.onReproduction(rowIndex, columnIndex);
           } else {
-            newRow.push(element);
+            newRow.push(false);
           }
         }
-      });
-      newGrid.push(newRow);
-    });
+        return newRow;
+      };
+
+      newGrid.push(row.reduce(reduceRow, []));
+      return newGrid;
+      // };
+    };
+    const newGrid = this.grid.reduce(gridReduce, []);
     this.provider.onIteration(newGrid);
   }
 
-  _countNeighbours(column, row) {
-    let count = 0;
+  _isIsolation(liveNeighbours) {
+    return liveNeighbours < 2;
+  }
 
-    POSITIONS.forEach(([y, x]) => {
+  _isLive(liveNeighbours) {
+    // boolean
+    return [2, 3].includes(liveNeighbours);
+  }
+
+  _isOverPopulation(liveNeighbours) {
+    return liveNeighbours > 3;
+  }
+
+  _isReproduction(liveNeighbours) {
+    return liveNeighbours === 3;
+  }
+
+  _countLiveNeighbours(row, column) {
+    const reducer = (liveNeighbours, [y, x]) => {
       const posY = row + y;
       const posX = column + x;
-      if (this._outOfBounds(posY, posX)) return;
+      if (this._outOfBounds(posY, posX)) return liveNeighbours;
 
-      // this.grid[posY][posX] && console.warn(column, row);
-      count += Number(this.grid[posY][posX]);
-    });
+      return liveNeighbours + Number(this.grid[posY][posX]);
+    };
 
-    return count;
+    return POSITIONS.reduce(reducer, 0);
   }
 
   _outOfBounds(posY, posX) {
