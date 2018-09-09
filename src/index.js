@@ -17,37 +17,38 @@ class GameOfLife {
   }
 
   _iterate() {
-    const gridReduce = (newGrid, row, rowIndex) => {
-      const reduceRow = (newRow, alive, columnIndex) => {
-        const liveNeighbours = this._countLiveNeighbours(rowIndex, columnIndex);
-        if (alive) {
-          if (this._isIsolation(liveNeighbours)) {
-            newRow.push(false);
-            this.provider.onIsolation(rowIndex, columnIndex);
-          } else if (this._isLive(liveNeighbours)) {
-            newRow.push(true);
-            this.provider.onLive(rowIndex, columnIndex);
-          } else if (this._isOverPopulation(liveNeighbours)) {
-            newRow.push(false);
-            this.provider.onOverPopulation(rowIndex, columnIndex);
-          }
-        } else {
-          if (this._isReproduction(liveNeighbours)) {
-            newRow.push(true);
-            this.provider.onReproduction(rowIndex, columnIndex);
-          } else {
-            newRow.push(false);
-          }
-        }
-        return newRow;
-      };
+    this.provider.onIteration(this._generateNewGrid());
+  }
 
-      newGrid.push(row.reduce(reduceRow, []));
-      return newGrid;
-      // };
-    };
-    const newGrid = this.grid.reduce(gridReduce, []);
-    this.provider.onIteration(newGrid);
+  _generateNewGrid() {
+    return this.grid.map((row, rowIndex) => {
+      return row.map((alive, columnIndex) => {
+        const liveNeighbours = this._countLiveNeighbours(rowIndex, columnIndex);
+
+        const { action, value } = this._getActionAndValue(
+          alive,
+          liveNeighbours
+        );
+        action && this.provider[action](rowIndex, columnIndex);
+        return value;
+      });
+    });
+  }
+
+  _getActionAndValue(alive, liveNeighbours) {
+    if (alive) {
+      if (this._isIsolation(liveNeighbours)) {
+        return { action: "onIsolation", value: false };
+      } else if (this._isLive(liveNeighbours)) {
+        return { action: "onLive", value: true };
+      } else if (this._isOverPopulation(liveNeighbours)) {
+        return { action: "onOverPopulation", value: false };
+      }
+    } else if (this._isReproduction(liveNeighbours)) {
+      return { action: "onReproduction", value: true };
+    } else {
+      return { value: false };
+    }
   }
 
   _isIsolation(liveNeighbours) {
