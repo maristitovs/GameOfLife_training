@@ -12,22 +12,53 @@ class TestProvider {
 }
 
 describe("GameOfLife", () => {
+  const copySetInterval = setInterval;
+  afterEach(() => {
+    setInterval = copySetInterval;
+  });
   it("should initialize", () => {
     const provider = new TestProvider();
-    const life = new GameOfLife(fixtures.onIteration.given, provider);
+    const life = new GameOfLife(fixtures.onIteration.zero, provider);
 
     expect(life).toBeInstanceOf(GameOfLife);
-    expect(life.size).toBe(5);
-    expect(life.grid).toEqual(fixtures.onIteration.given);
+    expect(life.size).toBe(7);
+    expect(life.grid).toEqual(fixtures.onIteration.zero);
     expect(life.provider).toEqual(provider);
   });
 
   it("#onIteration", () => {
     const provider = new TestProvider();
-    const life = new GameOfLife(fixtures.onIteration.given, provider);
+    const life = new GameOfLife(fixtures.onIteration.zero, provider);
+    setInterval = (callback, interval) => {
+      for (let i = 0; i < 4; i++) {
+        callback();
+      }
+    };
+
     life.start();
 
-    expect(provider.onIteration).toBeCalledWith(fixtures.onIteration.expected);
+    expect(provider.onIteration).toHaveBeenCalledTimes(5);
+
+    expect(provider.onIteration).toHaveBeenNthCalledWith(
+      1,
+      fixtures.onIteration.one
+    );
+    expect(provider.onIteration).toHaveBeenNthCalledWith(
+      2,
+      fixtures.onIteration.two
+    );
+    expect(provider.onIteration).toHaveBeenNthCalledWith(
+      3,
+      fixtures.onIteration.three
+    );
+    expect(provider.onIteration).toHaveBeenNthCalledWith(
+      4,
+      fixtures.onIteration.four
+    );
+    expect(provider.onIteration).toHaveBeenNthCalledWith(
+      5,
+      fixtures.onIteration.five
+    );
   });
 
   it("#onIsolation", () => {
