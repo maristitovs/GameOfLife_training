@@ -1,4 +1,4 @@
-const zero = [
+const given = [
   [false, false, false, false, false, false, false],
   [false, false, false, false, false, true, false],
   [false, false, true, false, true, true, false],
@@ -8,7 +8,7 @@ const zero = [
   [true, true, false, false, false, false, false]
 ];
 
-const one = [
+const iter1 = [
   [false, false, false, false, false, false, false],
   [false, false, false, false, true, true, false],
   [false, false, false, false, false, true, false],
@@ -18,7 +18,7 @@ const one = [
   [true, true, false, false, false, false, false]
 ];
 
-const two = [
+const iter2 = [
   [false, false, false, false, false, false, false],
   [false, false, false, false, true, true, false],
   [false, false, false, false, false, true, true],
@@ -28,7 +28,7 @@ const two = [
   [false, false, false, false, false, false, false]
 ];
 
-const three = [
+const iter3 = [
   [false, false, false, false, false, false, false],
   [false, false, false, false, true, true, true],
   [false, true, false, false, false, false, true],
@@ -38,7 +38,7 @@ const three = [
   [false, false, false, false, false, false, false]
 ];
 
-const four = [
+const iter4 = [
   [false, false, false, false, false, true, false],
   [false, false, false, false, false, true, true],
   [false, true, true, false, false, false, false],
@@ -48,7 +48,7 @@ const four = [
   [false, false, false, false, false, false, false]
 ];
 
-const five = [
+const iter5 = [
   [false, false, false, false, false, true, true],
   [false, false, false, false, false, true, true],
   [false, true, true, false, false, false, false],
@@ -58,4 +58,4 @@ const five = [
   [false, false, false, false, false, false, false]
 ];
 
-module.exports = { zero, one, two, three, four, five };
+export default { given, iter1, iter2, iter3, iter4, iter5 };
