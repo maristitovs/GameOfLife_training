@@ -1,8 +1,8 @@
 // prettier-ignore
 const POSITIONS = [
   [-1, -1], [-1, 0], [-1, 1],
-  [ 0, -1],          [ 0, 1],
-  [ 1, -1], [ 1, 0], [ 1, 1]
+  [0, -1], [0, 1],
+  [1, -1], [1, 0], [1, 1]
 ];
 const DEFAULT_SPEED = 1000;
 
@@ -13,10 +13,16 @@ export default class GameOfLife {
 
   start = () => {
     this._iterate();
-    setInterval(this._iterate, this.speed);
+    this.nextIter = setInterval(this._iterate, this.speed)
   };
-  pause = () => {};
-  restart = () => {};
+  pause = () => {
+    clearInterval(this.nextIter)
+    this.nextIter = null
+  };
+  restart = config => {
+    this._setConfig(config);
+    this.start();
+  };
 
   _iterate = () => {
     this.grid = this._generateNewGrid();
