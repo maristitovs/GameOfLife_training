@@ -26,10 +26,10 @@ body {
   border-bottom: 1px solid black;
 }
 .cell.alive {
-  background-color: #bada55;
+  background-color: #4682B4;
 }
 .cell.dead {
-  background-color: #fa0000;
+  background-color: #E8E8E8;
 }
 
 .info {

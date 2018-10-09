@@ -46,4 +46,7 @@ pauseButton.addEventListener("click", () => {
   }
 });
 
+form.querySelector("#sizeX").defaultValue = game.sizeX
+form.querySelector("#sizeY").defaultValue = game.sizeY
+form.querySelector("#speed").defaultValue = game.speed
 game.start();
