@@ -12,11 +12,21 @@ const dog = {
   weight: "1"
 };
 
+
+
+
+
 cat.age > dog.age || cat.age >= dog.age; // => true
 cat.age < dog.age && cat.age <= dog.age; // => false
 
+
+
+
 cat.weight == dog.weight; // => ?
 cat.weight === dog.weight; // => ?
+
+
+
 
 const myPets = [];
 const yourPets = myPets;
@@ -25,6 +35,9 @@ myPets === yourPets; // => ?
 yourPets.push(dog);
 myPets === yourPets; // => ?
 // Why?
+
+
+
 
 // Truthness:
 "" || null || undefined || 0 || false;
