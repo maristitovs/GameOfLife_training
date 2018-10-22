@@ -1,0 +1,73 @@
+import React, { Component } from "react";
+import ReactProvider from "./../../main_app/providers/ReactProvider";
+import GameOfLife from "./../../main_app/app/GameOfLife";
+
+import Changelog from "./../Changelog";
+import Grid from "./../Grid";
+import SubmitForm from "./../SubmitForm";
+import Button from "@material-ui/core/Button";
+import "./styles.css";
+
+const formElement = ["sizeX", "sizeY", "speed"];
+
+export default class Provider extends Component {
+  state = { grid: [], counterIterations: [], pauseText: "Pause" };
+
+  componentDidMount = () => {
+    this.provider = new ReactProvider(this);
+    this.game = new GameOfLife({
+      provider: this.provider,
+      sizeX: 50,
+      sizeY: 50,
+      speed: 10
+    });
+    this.game.start();
+  };
+
+  onIteration = (grid, counters) => {
+    const { counterIterations } = this.state;
+    const newCounters = [counters, ...counterIterations];
+    newCounters.length > 10 && newCounters.pop();
+    this.setState({
+      grid,
+      counterIterations: newCounters
+    });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    let config = { provider: new ReactProvider(this) };
+    formElement.map(element => (config[element] = parseInt(event.target.elements[element].value)));
+    this.game.pause(true);
+    this.game.restart(config);
+    this.setState({ pauseText: "Pause" });
+  };
+
+  handlePause = () => {
+    if (this.game.nextIter) {
+      this.setState({ pauseText: "Resume" });
+      this.game.pause();
+    } else {
+      this.setState({ pauseText: "Pause" });
+      this.game.start();
+    }
+  };
+
+  render() {
+    const { grid, counterIterations } = this.state;
+    return (
+      <div className="providerBody">
+        <div id="info">
+          <div id="config">
+            <SubmitForm handleSubmit={this.handleSubmit} />
+            <Button variant="contained" color="primary" onClick={this.handlePause} type="button" id="pause">
+              {this.state.pauseText}
+            </Button>
+          </div>
+          <Changelog counterIterations={counterIterations} />
+        </div>
+        <Grid grid={grid} />
+      </div>
+    );
+  }
+}

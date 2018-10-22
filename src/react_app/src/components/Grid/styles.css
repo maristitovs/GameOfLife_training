@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+}
+
+.grid {
+  display: inline-flex;
+  flex-direction: column;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.cell.alive {
+  background-color: #4682b4;
+}
+.cell.dead {
+  background-color: #e8e8e8;
+}

@@ -1,0 +1,20 @@
+* {
+  box-sizing: border-box;
+}
+.providerBody {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+}
+.info {
+  padding: 40px;
+  width: 100%;
+  display: flex;
+  min-height: 375px;
+  justify-content: space-between;
+}
+
+.config {
+  margin-right: 20px;
+}
