@@ -1,8 +1,8 @@
 * {
   box-sizing: border-box;
 }
-.providerBody {
-  display: flex;
+body {
+  display: block;
   align-items: center;
   flex-direction: column;
   padding: 0;

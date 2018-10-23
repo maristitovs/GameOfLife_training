@@ -16,9 +16,9 @@ const Row = ({ row }) => (
   </div>
 );
 
-const Grid = ({ grid }) => {
+const GameGrid = ({ grid }) => {
   return (
-    <div className="grid">
+    <div id="grid" className="grid">
       {grid.map((row, rowIndex) => (
         <Row key={rowIndex} row={row} />
       ))}
@@ -26,4 +26,4 @@ const Grid = ({ grid }) => {
   );
 };
 
-export default Grid;
+export default GameGrid;

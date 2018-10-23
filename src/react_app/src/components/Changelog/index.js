@@ -1,15 +1,23 @@
 import React from "react";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import "./styles.css";
 
 const columns = ["#", "Isolation", "Live", "Over Population", "Reproduction"];
 const Header = () => (
-  <tr>
+  <TableRow>
     {columns.map((data, headIndex) => (
-      <th key={headIndex}>{data}</th>
+      <TableCell component="th" scope="column" key={headIndex}>
+        {data}
+      </TableCell>
     ))}
-  </tr>
+  </TableRow>
 );
-const TableRow = ({ counterIterations }) =>
+
+const Row = ({ counterIterations }) =>
   counterIterations.map((iteration, index) => (
     <tr key={index}>
       {Object.keys(iteration).map((key, keyIndex) => (
@@ -20,14 +28,14 @@ const TableRow = ({ counterIterations }) =>
 
 const Changelog = ({ counterIterations }) => {
   return (
-    <table id="changelog">
-      <thead>
+    <Table id="changelog">
+      <TableHead>
         <Header />
-      </thead>
-      <tbody>
-        <TableRow counterIterations={counterIterations} />
-      </tbody>
-    </table>
+      </TableHead>
+      <TableBody>
+        <Row counterIterations={counterIterations} />
+      </TableBody>
+    </Table>
   );
 };
 

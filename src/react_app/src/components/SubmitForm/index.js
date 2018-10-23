@@ -1,24 +1,26 @@
 import React from "react";
-import "./styles.css";
 import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
-const SubmitForm = ({ handleSubmit }) => {
+const SubmitForm = ({ handleSubmit, handleClick, pauseText }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="sizeX">Size X</label>
-        <input type="number" name="sizeX" id="sizeX" />
+        <TextField label="Size X" name="sizeX" id="sizeX" type="number" />
       </div>
       <div>
-        <label htmlFor="sizeY" />
-        Size Y<input type="number" name="sizeY" id="sizeY" />
+        <TextField label="Size Y" name="sizeY" id="sizeY" type="number" />
       </div>
       <div>
-        <label htmlFor="speed">Speed</label>
-        <input type="number" name="speed" id="speed" />
+        <TextField label="Speed" name="speed" id="speed" type="number" />
       </div>
       <div>
-        <button type="submit">Update</button>
+        <Button type="submit" variant="contained">
+          Update
+        </Button>
+        <Button variant="contained" onClick={handleClick} type="button" id="pause">
+          {pauseText}
+        </Button>
       </div>
     </form>
   );
