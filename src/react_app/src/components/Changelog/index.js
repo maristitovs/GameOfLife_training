@@ -1,5 +1,6 @@
 import React from "react";
 import Table from "@material-ui/core/Table";
+import { withStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
@@ -10,25 +11,36 @@ const columns = ["#", "Isolation", "Live", "Over Population", "Reproduction"];
 const Header = () => (
   <TableRow>
     {columns.map((data, headIndex) => (
-      <TableCell component="th" scope="column" key={headIndex}>
+      <CustomTableCell component="th" scope="column" key={headIndex}>
         {data}
-      </TableCell>
+      </CustomTableCell>
     ))}
   </TableRow>
 );
 
 const Row = ({ counterIterations }) =>
   counterIterations.map((iteration, index) => (
-    <tr key={index}>
+    <TableRow key={index}>
       {Object.keys(iteration).map((key, keyIndex) => (
-        <td key={keyIndex}> {iteration[key]}</td>
+        <CustomTableCell key={keyIndex}> {iteration[key]}</CustomTableCell>
       ))}
-    </tr>
+    </TableRow>
   ));
+
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+    textAlign: "center"
+  },
+  body: {
+    fontSize: 14
+  }
+}))(TableCell);
 
 const Changelog = ({ counterIterations }) => {
   return (
-    <Table id="changelog">
+    <Table id="changelog" className="changelog">
       <TableHead>
         <Header />
       </TableHead>

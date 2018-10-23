@@ -5,7 +5,7 @@ import GameOfLife from "./../../main_app/app/GameOfLife";
 import Changelog from "./../Changelog";
 import GameGrid from "./../GameGrid";
 import SubmitForm from "./../SubmitForm";
-// import "./styles.css";
+import "./styles.css";
 import { Grid } from "@material-ui/core";
 
 const formElement = ["sizeX", "sizeY", "speed"];
@@ -64,11 +64,12 @@ export default class Provider extends Component {
                 handleSubmit={this.handleSubmit}
                 handleClick={this.handlePause}
                 pauseText={this.state.pauseText}
+                item
               />
             </div>
-            <Changelog counterIterations={counterIterations} />
+            <Changelog counterIterations={counterIterations} item />
           </div>
-          <GameGrid grid={grid} />
+          <GameGrid grid={grid} item />
         </Grid>
       </div>
     );

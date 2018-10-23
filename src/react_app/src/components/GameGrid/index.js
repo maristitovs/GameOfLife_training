@@ -1,4 +1,5 @@
 import React from "react";
+import Paper from "@material-ui/core/Paper";
 
 import "./styles.css";
 
@@ -18,11 +19,11 @@ const Row = ({ row }) => (
 
 const GameGrid = ({ grid }) => {
   return (
-    <div id="grid" className="grid">
+    <Paper elevation={8} id="grid" className="grid">
       {grid.map((row, rowIndex) => (
         <Row key={rowIndex} row={row} />
       ))}
-    </div>
+    </Paper>
   );
 };
 
