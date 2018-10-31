@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import ReactProvider from "./../../main_app/providers/ReactProvider";
 import GameOfLife from "./../../main_app/app/GameOfLife";
-
 import Changelog from "./../Changelog";
 import GameGrid from "./../GameGrid";
 import SubmitForm from "./../SubmitForm";
-import "./styles.css";
 import { Grid } from "@material-ui/core";
 
 const formElement = ["sizeX", "sizeY", "speed"];
@@ -56,22 +54,21 @@ export default class Provider extends Component {
   render() {
     const { grid, counterIterations } = this.state;
     return (
-      <div style={{ padding: 20 }}>
-        <Grid container direction="row-reverse" justify="space-evenly" alignItems="center">
-          <div id="info" className="info">
-            <div id="config" className="config">
-              <SubmitForm
-                handleSubmit={this.handleSubmit}
-                handleClick={this.handlePause}
-                pauseText={this.state.pauseText}
-                item
-              />
-            </div>
-            <Changelog counterIterations={counterIterations} item />
-          </div>
-          <GameGrid grid={grid} item />
+      <Grid container direction="row" justify="space-evenly" alignItems="space-between">
+        <Grid item className="config" xs="auto">
+          <SubmitForm
+            handleSubmit={this.handleSubmit}
+            handleClick={this.handlePause}
+            pauseText={this.state.pauseText}
+          />
         </Grid>
-      </div>
+        <Grid item xs={6}>
+          <GameGrid grid={grid} />
+        </Grid>
+        <Grid item xs="auto" alignItems="space-between">
+          <Changelog counterIterations={counterIterations} />
+        </Grid>
+      </Grid>
     );
   }
 }

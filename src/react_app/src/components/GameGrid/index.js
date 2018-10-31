@@ -1,30 +1,21 @@
 import React from "react";
+import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
+import Cell from "./Cell";
+import styles from "./styles";
 
-import "./styles.css";
-
-const cellClassName = cell => {
-  return cell ? "cell alive" : "cell dead";
-};
-
-const Cell = ({ cell }) => <div className={cellClassName(cell)} />;
-
-const Row = ({ row }) => (
-  <div className="row">
-    {row.map((cell, colIndex) => (
-      <Cell key={colIndex} cell={cell} />
-    ))}
-  </div>
-);
-
-const GameGrid = ({ grid }) => {
+const GameGrid = ({ grid, classes }) => {
   return (
-    <Paper elevation={8} id="grid" className="grid">
+    <Paper elevation={8} className={classes.grid}>
       {grid.map((row, rowIndex) => (
-        <Row key={rowIndex} row={row} />
+        <div key={rowIndex} className={classes.row}>
+          {row.map((cell, colIndex) => (
+            <Cell key={colIndex} cell={cell} />
+          ))}
+        </div>
       ))}
     </Paper>
   );
 };
 
-export default GameGrid;
+export default withStyles(styles)(GameGrid);
